@@ -179,6 +179,7 @@ finanzapp/
 │   ├── 004-api-deudas.md
 │   ├── 005-recordatorios.md
 │   ├── 006-frontend-dashboard.md
+│   ├── 007-ingresos-mensuales.md
 │   └── done/                     # Issues completados
 ├── backend/
 │   ├── requirements.txt
