@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinanzApp — Software Journey</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=Libre+Baskerville:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0e0e0c;
+  --bg2: #161614;
+  --bg3: #1e1e1b;
+  --line: rgba(255,255,255,0.08);
+  --text: #e8e4d8;
+  --muted: #8a8470;
+  --faint: #4a4840;
+  --green: #4caf7d;
+  --green-dim: rgba(76,175,125,0.15);
+  --gold: #c9953a;
+  --gold-dim: rgba(201,149,58,0.15);
+  --red: #c96a4a;
+  --red-dim: rgba(201,106,74,0.15);
+  --accent: #7eb8c9;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 2rem;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(14,14,12,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--green);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--text); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 3rem 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(76,175,125,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(126,184,201,0.04) 0%, transparent 50%);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.hero-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-label::before {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 1px;
+  background: var(--green);
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  position: relative;
+  max-width: 800px;
+  margin-bottom: 2rem;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--green);
+}
+
+.hero-desc {
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 500px;
+  line-height: 1.8;
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--text);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/* SECTIONS */
+.section {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 6rem 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.section-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.section-sub {
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--green);
+  margin-bottom: 3rem;
+}
+
+/* PROSE */
+.prose {
+  font-size: 0.97rem;
+  line-height: 1.9;
+  color: var(--text);
+  max-width: 660px;
+}
+
+.prose p { margin-bottom: 1.2rem; }
+.prose strong { color: var(--text); font-weight: 500; }
+
+/* CODE */
+.code-wrap {
+  margin: 1.5rem 0;
+}
+
+.code-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 6px;
+}
+
+.code-block {
+  background: var(--bg3);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+}
+
+.code-block pre {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #c8c0a8;
+}
+
+.kw { color: #7eb8c9; }
+.st { color: #c9953a; }
+.cm { color: var(--faint); font-style: italic; }
+.fn { color: #9ab87c; }
+.nu { color: #c96a4a; }
+
+/* CALLOUTS */
+.callout {
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+  border-left: 3px solid;
+  font-size: 0.92rem;
+  line-height: 1.75;
+}
+
+.callout.green { background: var(--green-dim); border-color: var(--green); }
+.callout.gold { background: var(--gold-dim); border-color: var(--gold); }
+.callout.red { background: var(--red-dim); border-color: var(--red); }
+
+.callout-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.callout.green .callout-tag { color: var(--green); }
+.callout.gold .callout-tag { color: var(--gold); }
+.callout.red .callout-tag { color: var(--red); }
+
+/* TWO COL */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.card-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 0.75rem;
+}
+
+.card p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* BADGE */
+.badge {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-right: 6px;
+}
+
+.badge.deep { background: var(--green-dim); color: var(--green); }
+.badge.shallow { background: var(--gold-dim); color: var(--gold); }
+.badge.leak { background: var(--red-dim); color: var(--red); }
+
+/* TIMELINE */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+  margin: 2.5rem 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px; bottom: 8px;
+  width: 1px;
+  background: var(--line);
+}
+
+.tl-item {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -2rem;
+  top: 8px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  transform: translateX(-2px);
+}
+
+.tl-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 3px;
+}
+
+.tl-title {
+  font-size: 0.97rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.tl-body {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* QUOTE */
+blockquote {
+  border-left: 2px solid var(--faint);
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  margin: 2rem 0;
+  font-family: 'Libre Baskerville', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+/* VERDICT GRID */
+.verdict-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+@media (max-width: 600px) { .verdict-grid { grid-template-columns: 1fr; } }
+
+.v-card {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.v-icon { font-size: 1.1rem; margin-bottom: 0.5rem; display: block; }
+
+.v-card h4 {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.v-card p {
+  font-size: 0.87rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* DIVIDER */
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2.5rem 0;
+}
+
+/* INLINE CODE */
+code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.82em;
+  background: var(--bg3);
+  color: var(--accent);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 3rem 2rem;
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+footer p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--faint);
+}
+
+footer a {
+  color: var(--green);
+  text-decoration: none;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+}
+
+/* ANIMATIONS */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .hero { padding: 0 1.5rem 4rem; }
+  .section { padding: 4rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-brand">// finanzapp</a>
+  <ul class="nav-links">
+    <li><a href="#s1">Bala Trazadora</a></li>
+    <li><a href="#s2">Módulos</a></li>
+    <li><a href="#s3">Veredicto</a></li>
+    <li><a href="https://github.com/MariaABZ/finanzapp" target="_blank">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-label">Software Journey · Tarea 3 · Entrega Final</div>
+  <h1>Bitácora de<br><em>co-creación</em><br>hombre-máquina</h1>
+  <p class="hero-desc">
+    Auditoría arquitectónica retrospectiva de FinanzApp — sistema de gestión financiera personal quincenales construido con Claude Code (agente Ralph) como desarrollador principal.
+  </p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">7</span>
+      <span class="stat-label">Issues cerrados</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">36</span>
+      <span class="stat-label">Commits</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">13</span>
+      <span class="stat-label">Tests pasando</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">2</span>
+      <span class="stat-label">Sprints</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 1 -->
+<section class="section fade-in" id="s1">
+  <div class="section-tag">Sección 01</div>
+  <h2 class="section-title">La Bala Trazadora</h2>
+  <p class="section-sub">Estrategia de exploración y mitigación de riesgo inicial</p>
+
+  <div class="prose">
+    <p>
+      Antes de escribir una línea de código, el equipo ejecutó la skill <code>grill-me</code> para interrogar el problema desde múltiples ángulos. Esta fase no buscaba diseñar la solución definitiva, sino exponer los supuestos incorrectos que ya operaban silenciosamente en el equipo.
+    </p>
+    <p>
+      El árbol de diseño generado reveló tensiones que no habíamos anticipado. El primer supuesto erróneo era que un usuario tiene <strong>una quincena activa a la vez</strong>. La realidad: los usuarios necesitan navegar historial de quincenas anteriores para comparar patrones de gasto, lo que redefinió el modelo de datos desde el principio. El segundo supuesto erróneo era que el ingreso mensual se divide en exactamente <strong>50/50</strong> entre quincenas — en Colombia muchos salarios llegan el 15 y el 30 en proporciones variables, lo que forzó el campo <code>porcentaje_primera_quincena</code> en el modelo <code>IngresoMensual</code>.
+    </p>
+  </div>
+
+  <hr>
+
+  <h3 style="font-family:'Playfair Display',serif; font-size:1.5rem; margin-bottom:1rem; letter-spacing:-0.01em;">La Bala Trazadora aplicada</h3>
+
+  <div class="prose">
+    <p>
+      El issue más incierto del sistema no era autenticación (problema resuelto) ni los formularios del frontend (UI trivial). Era la <strong>integración entre la lógica de quincenas y los recordatorios de deudas</strong>: ¿cómo sabe el sistema que una deuda con <code>fecha_vencimiento = 2025-06-14</code> pertenece a la primera quincena de junio y debe marcarse como urgente si faltan 2 días?
+    </p>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-tag">Decisión de Bala Trazadora</div>
+    Se instruyó a Ralph para atacar primero el Issue #007 (ingresos mensuales) junto con el #001 (auth), forzando la definición de <code>ingreso_service.py</code> y su función <code>fechas_quincena()</code> como primer artefacto de código. Esto validó el modelo de datos central antes de construir cualquier otra capa. El Handoff #1 documenta esta decisión explícitamente.
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-tag">Pre-código</div>
+      <div class="tl-title">grill-me + árbol de diseño</div>
+      <div class="tl-body">Identificación de supuestos erróneos sobre distribución de ingresos y navegación de historial. Definición del issue de integración más arriesgado.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-tag">Sprint 1 — Issues #001 y #007</div>
+      <div class="tl-title">Auth JWT + ingreso_service.py</div>
+      <div class="tl-body">Primer sprint atacando los dos issues de mayor riesgo arquitectónico. 19 tests en verde. El Handoff #1 congela las decisiones de arquitectura base.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-tag">Checkpoint arquitectónico</div>
+      <div class="tl-title">skill /improve-codebase-architecture</div>
+      <div class="tl-body">Diagnóstico de 3 problemas: lógica de fechas en el router, Base acoplada a user.py, helper duplicado en gastos y deudas. Simulación de 3 sub-agentes con propuestas distintas.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-tag">Sprint 2 — Issues #002, #003, #004</div>
+      <div class="tl-title">Quincenas, Gastos, Deudas</div>
+      <div class="tl-body">Con la arquitectura refactorizada, los tres issues se completaron con velocidad alta. El Handoff #2 documenta las decisiones de consolidación de módulos.</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-tag">Cierre — Issues #005 y #006</div>
+      <div class="tl-title">Recordatorios + Frontend</div>
+      <div class="tl-body">Implementación del servicio de urgencia y el dashboard React. 13 tests de integración pasando al 100%.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 2 -->
+<section class="section fade-in" id="s2">
+  <div class="section-tag">Sección 02</div>
+  <h2 class="section-title">Anatomía de la Complejidad</h2>
+  <p class="section-sub">Módulos Profundos vs. Superficiales — análisis bajo Ousterhout</p>
+
+  <div class="prose">
+    <p>
+      John Ousterhout define un <strong>módulo profundo</strong> como aquel cuya interfaz es significativamente más simple que su implementación: oculta complejidad vasta detrás de una superficie estrecha. Un módulo superficial no oculta nada — quien lo usa absorbe la complejidad en lugar de encapsularla.
+    </p>
+  </div>
+
+  <hr>
+
+  <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1rem; display:flex; align-items:center; gap:10px;">
+    <span class="badge deep">Módulos Profundos</span> Los mejores diseños del agente
+  </h3>
+
+  <div class="prose">
+    <p>El módulo más elegante producido por Ralph es <code>ingreso_service.py</code>. Observemos su interfaz pública completa:</p>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-title">ingreso_service.py — interfaz pública (5 funciones)</div>
+    <div class="code-block"><pre><span class="cm"># Interfaz completa del módulo</span>
+
+<span class="fn">ingreso_primera_quincena</span>(monto_mensual: Decimal, porcentaje: <span class="kw">int</span>) → Decimal
+<span class="fn">ingreso_segunda_quincena</span>(monto_mensual: Decimal, porcentaje: <span class="kw">int</span>) → Decimal
+<span class="fn">calcular_ingreso_quincena</span>(ingresos_activos: list, numero_quincena: <span class="kw">int</span>) → Decimal
+<span class="fn">fechas_quincena</span>(anio: <span class="kw">int</span>, mes: <span class="kw">int</span>, numero: <span class="kw">int</span>) → tuple[date, date]
+<span class="fn">total_ingresos_mensuales</span>(ingresos_activos: list) → Decimal</pre></div>
+  </div>
+
+  <div class="prose">
+    <p>Detrás de esas 5 firmas se esconde: manejo de <code>Decimal</code> para evitar errores de punto flotante en montos financieros, uso de <code>calendar.monthrange()</code> para calcular el último día de cualquier mes (incluyendo años bisiestos), y validación de que <code>numero_quincena</code> solo acepta 1 o 2. El llamador no sabe nada de esto.</p>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-tag">Diagnóstico Ousterhout — Módulo Profundo</div>
+    <code>ingreso_service.py</code> pasa la prueba del "costo de la interfaz": aprender las 5 firmas cuesta mucho menos que reimplementar la lógica de fechas y distribución en cada sitio que la necesite. El test <code>test_fechas_segunda_quincena_bisiesto</code> confirma que la complejidad del calendario (año 2024, febrero, 29 días) está completamente oculta al consumidor.
+  </div>
+
+  <hr>
+
+  <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1rem; display:flex; align-items:center; gap:10px;">
+    <span class="badge shallow">Módulos Superficiales</span> Los puntos donde la IA falló
+  </h3>
+
+  <div class="prose">
+    <p>Ralph exhibió un patrón problemático recurrente: la tendencia a crear un archivo separado por cada responsabilidad conceptual, aunque esa responsabilidad fuera trivial. El checkpoint arquitectónico documentó este problema explícitamente:</p>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-title">Problema detectado en el checkpoint — helper duplicado</div>
+    <div class="code-block"><pre><span class="cm"># ❌ La misma función en DOS archivos distintos</span>
+
+<span class="cm"># backend/app/api/gastos.py</span>
+<span class="kw">def</span> <span class="fn">get_quincena_del_usuario</span>(db, quincena_id, user):
+    <span class="kw">return</span> db.query(Quincena).filter(
+        Quincena.id == quincena_id,
+        Quincena.user_id == user.id
+    ).first()
+
+<span class="cm"># backend/app/api/deudas.py — COPIA EXACTA</span>
+<span class="kw">def</span> <span class="fn">get_quincena_del_usuario</span>(db, quincena_id, user):
+    <span class="kw">return</span> db.query(Quincena).filter(
+        Quincena.id == quincena_id,
+        Quincena.user_id == user.id
+    ).first()</pre></div>
+  </div>
+
+  <div class="prose">
+    <p>El checkpoint también identificó que <code>Base = DeclarativeBase()</code> vivía dentro de <code>models/user.py</code>, creando una dependencia implícita: todos los modelos importaban <code>Base</code> desde el modelo de usuario, lo que significa que un cambio en <code>user.py</code> podía romper las importaciones de <code>quincena.py</code>, <code>gasto.py</code> y <code>deuda.py</code>.</p>
+  </div>
+
+  <div class="callout gold">
+    <div class="callout-tag">Diagnóstico Ousterhout — Módulo Superficial</div>
+    Ousterhout describe este anti-patrón como "classitis": la creencia de que más archivos pequeños equivale a mejor diseño. En realidad, cada archivo que solo re-exporta o duplica sin añadir valor incrementa la complejidad de interfaces. La solución aplicada fue mover <code>Base</code> a <code>db/base.py</code> y centralizar el helper en <code>services/quincena_service.py</code>.
+  </div>
+
+  <hr>
+
+  <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1rem; display:flex; align-items:center; gap:10px;">
+    <span class="badge leak">Fuga de Información</span> Detalles internos que escaparon a la UI
+  </h3>
+
+  <div class="prose">
+    <p>El Handoff #2 establece explícitamente: <em>"El frontend debe consumir exclusivamente la API REST. No compartir lógica de negocio entre frontend y backend."</em> Esta regla nació de un episodio concreto de fuga de información en el componente <code>DeudaItem.tsx</code>:</p>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-title">❌ Fuga de implementación — versión inicial</div>
+    <div class="code-block"><pre><span class="cm">// DeudaItem.tsx — lógica de negocio en la UI</span>
+<span class="kw">const</span> diasRestantes = differenceInDays(
+  parseISO(deuda.fecha_vencimiento), <span class="kw">new</span> Date()
+);
+<span class="kw">const</span> urgencia = diasRestantes &lt;= <span class="nu">3</span> ? <span class="st">'urgente'</span>
+  : diasRestantes &lt;= <span class="nu">7</span> ? <span class="st">'proximo'</span>
+  : <span class="st">'a_tiempo'</span>;</pre></div>
+  </div>
+
+  <div class="code-wrap">
+    <div class="code-title">✅ Corrección — ocultamiento de información restaurado</div>
+    <div class="code-block"><pre><span class="cm"># recordatorio_service.py — lógica donde pertenece</span>
+<span class="kw">def</span> <span class="fn">clasificar_urgencia</span>(fecha_vencimiento: date, hoy: date) → str:
+    dias = (fecha_vencimiento - hoy).days
+    <span class="kw">if</span> dias &lt;= <span class="nu">0</span>:
+        <span class="kw">return</span> <span class="st">"urgente"</span>
+    <span class="kw">elif</span> dias &lt;= <span class="nu">3</span>:
+        <span class="kw">return</span> <span class="st">"proximo"</span>
+    <span class="kw">return</span> <span class="st">"a_tiempo"</span>
+
+<span class="cm"># El API devuelve urgencia pre-calculada</span>
+<span class="cm"># El frontend solo lee deuda.urgencia</span></pre></div>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-tag">Lección de Ousterhout aplicada</div>
+    La fuga ocurre cuando la misma decisión de diseño afecta múltiples módulos. Los umbrales de urgencia (3 días, 7 días) eran una decisión que vivía simultáneamente en backend y frontend. Consolidarla en <code>recordatorio_service.py</code> es la materialización práctica del principio de ocultamiento de información.
+  </div>
+</section>
+
+<!-- SECCIÓN 3 -->
+<section class="section fade-in" id="s3">
+  <div class="section-tag">Sección 03</div>
+  <h2 class="section-title">El Veredicto Retrospectivo</h2>
+  <p class="section-sub">Post-mortem de la skill /improve-codebase-architecture</p>
+
+  <div class="prose">
+    <p>
+      Tras completar los issues #001 y #007, se ejecutó la skill <code>/improve-codebase-architecture</code> que desplegó tres sub-agentes paralelos con posturas radicalmente distintas. El checkpoint arquitectónico documenta en detalle cada propuesta.
+    </p>
+  </div>
+
+  <blockquote>
+    "El debate entre sub-agentes no fue sobre quién tenía razón — fue sobre qué tipo de cambio futuro era más probable y cuál interfaz lo absorbería mejor."
+  </blockquote>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="card-tag">Sub-agente A — Separación estricta</div>
+      <p>Propuso una capa nueva <code>domain/</code> con clases estáticas. Máxima separación, pero excesiva para un MVP. Introduce complejidad de navegación innecesaria.</p>
+    </div>
+    <div class="card">
+      <div class="card-tag">Sub-agente B — Services como verdad única</div>
+      <p>Mover toda lógica a <code>services/</code> sin capas nuevas. Consistente con la arquitectura existente. Resuelve los 3 problemas sin overhead. <strong>Ganó.</strong></p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-tag">Sub-agente C — Módulo utils/</div>
+    <p style="font-size:0.9rem; color:var(--muted); line-height:1.7;">Propuso un módulo de utilidades compartidas. El riesgo: <code>utils/</code> suele convertirse en un cajón de sastre que dificulta encontrar lógica de negocio específica. Descartado.</p>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-tag">Solución híbrida implementada</div>
+    Base declarativa → <code>db/base.py</code> (Sub-agente A y B coinciden). Lógica de fechas → <code>services/quincena_service.py</code> (Sub-agente B). Helper de ownership → centralizado en <code>quincena_service.py</code> (Sub-agente B). Resultado: sin capas nuevas, sin duplicación, sin acoplamiento implícito.
+  </div>
+
+  <hr>
+
+  <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1.25rem; letter-spacing:-0.01em;">Impacto en la velocidad del sprint</h3>
+
+  <div class="verdict-grid">
+    <div class="v-card">
+      <span class="v-icon">⚡</span>
+      <h4>Issues #001–#002 (pre-debate)</h4>
+      <p>Velocidad variable. Auth rápido, pero el modelo de quincenas requirió iteración por la lógica de fechas mal ubicada en el router.</p>
+    </div>
+    <div class="v-card">
+      <span class="v-icon">🎯</span>
+      <h4>Issues #003–#007 (post-debate)</h4>
+      <p>Velocidad notablemente más alta. Con <code>quincena_service.py</code> centralizado y <code>Base</code> aislada, los últimos issues se completaron sin retroalimentación negativa.</p>
+    </div>
+    <div class="v-card">
+      <span class="v-icon">🔁</span>
+      <h4>Change Amplification observada</h4>
+      <p>El issue #007 requirió modificar solo <code>models/ingreso.py</code>, <code>ingreso_service.py</code> y un endpoint nuevo. La interfaz absorbió el cambio en 3 archivos.</p>
+    </div>
+    <div class="v-card">
+      <span class="v-icon">📐</span>
+      <h4>Elasticidad de la interfaz</h4>
+      <p>El campo <code>porcentaje_primera_quincena</code> con default 50 resultó elástico: cuando llegó el requerimiento de distribución asimétrica, el modelo ya lo soportaba sin cambiar el esquema.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <h3 style="font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1rem; letter-spacing:-0.01em;">¿Demostró la interfaz buen gusto arquitectónico?</h3>
+
+  <div class="two-col">
+    <div class="callout green" style="margin:0;">
+      <div class="callout-tag">Decisiones que envejecieron bien</div>
+      El campo <code>porcentaje_primera_quincena</code>, la separación entre <code>IngresoMensual</code> (fuente recurrente) y <code>Quincena.ingresos</code> (ingreso real recibido), y <code>fechas_quincena()</code> como abstracción de calendario pura.
+    </div>
+    <div class="callout gold" style="margin:0;">
+      <div class="callout-tag">Decisiones con fragilidad potencial</div>
+      La FK directa <code>Gasto → Quincena</code> hace difícil mover un gasto entre quincenas si el usuario lo registró incorrectamente. Requeriría cambios en múltiples capas.
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top:2rem;">
+    <p>
+      El debate de los sub-agentes demostró ser valioso no por producir una propuesta radical (que habría sido contraproducente en pleno sprint), sino por forzar al equipo a <strong>articular explícitamente cuáles cambios futuros son probables</strong>. Esa articulación es precisamente lo que Ousterhout llama diseño de interfaces: no optimizar para la implementación de hoy, sino para el cambio de mañana.
+    </p>
+  </div>
+
+  <div class="callout green">
+    <div class="callout-tag">Conclusión retrospectiva</div>
+    FinanzApp demuestra que la co-creación hombre-máquina con un agente LLM produce módulos profundos genuinos cuando el humano interviene para corregir la tendencia natural del agente hacia la atomización excesiva y la duplicación. La arquitectura resultante es honesta en el sentido de Ousterhout: expone su complejidad real en el lugar correcto, y no la esconde en capas de indirección vacía.
+  </div>
+</section>
+
+<footer>
+  <span style="font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--green);">FinanzApp</span>
+  <p>Software Journey · Tarea 3 · Ingeniería de Software · 2026</p>
+  <a href="https://github.com/MariaABZ/finanzapp" target="_blank">github.com/MariaABZ/finanzapp ↗</a>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.05 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
